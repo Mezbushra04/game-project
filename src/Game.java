@@ -37,20 +37,39 @@ public class Game extends JPanel implements KeyListener {
         gameOver = false;
         lives = 3;  // Le joueur commence avec 3 vies
         level = 1;
-        timeLeft = 60;  // 60 secondes pour chaque niveau
+        timeLeft = 80;  // 80 secondes pour chaque niveau
 
         // Créer des ennemis
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             enemies.add(new Enemy(50 + i * 100, 200, 30, 30)); // Position initiale des ennemis
         }
 
         // Créer des points
+        for (int i = 0; i < 30; i++) {
+            points.add(new Point(50 + i * 80, 100)); // Position des points à manger
+        }
+        for (int i = 0; i < 20; i++) {
+            points.add(new Point(20 + i * 60, 20)); // Position des points à manger
+        }
         for (int i = 0; i < 10; i++) {
-            points.add(new Point(50 + i * 60, 100)); // Position des points à manger
+            points.add(new Point(100 + i * 60, 300)); // Position des points à manger
+        }
+        for (int i = 0; i < 10; i++) {
+            points.add(new Point(70 + i * 60, 150)); // Position des points à manger
+        }
+        for (int i = 0; i < 10; i++) {
+            points.add(new Point(70 + i * 60, 250)); // Position des points à manger
+        }
+        for (int i = 0; i < 10; i++) {
+            points.add(new Point(70 + i * 60, 350)); // Position des points à manger
         }
 
         // Créer des points spéciaux (bonus)
-        specialPoints.add(new SpecialPoint(300, 200)); // Exemple de point spécial
+        // Exemple de point spécial
+        specialPoints.add(new SpecialPoint(70, 100));
+        specialPoints.add(new SpecialPoint(70, 300));
+        specialPoints.add(new SpecialPoint(550, 250));
+        specialPoints.add(new SpecialPoint(350, 250));
 
         loadNewLevel();  // Charger le niveau au démarrage
 
@@ -71,10 +90,44 @@ public class Game extends JPanel implements KeyListener {
 
         if (level == 1) {
             // Créer des murs pour le niveau 1
-            walls.add(new Wall(100, 50, 400, 10));  // Mur horizontal
-            walls.add(new Wall(100, 100, 10, 200));  // Mur vertical
-            walls.add(new Wall(200, 200, 200, 10));  // Mur horizontal
-            walls.add(new Wall(400, 100, 10, 150));  // Mur vertical
+            // walls.add(new Wall(100, 50, 400, 10));  // Mur horizontal
+            walls.add(new Wall(100, 100, 10, 190));// Mur vertical
+            walls.add(new Wall(200, 100, 10, 190));
+            walls.add(new Wall(300, 100, 10, 190));
+            walls.add(new Wall(400, 100, 10, 190));
+            walls.add(new Wall(500, 100, 10, 190));
+            //walls.add(new Wall(200, 200, 200, 10));// Mur horizontal
+            //   walls.add(new Wall(320, 320, 50, 5));
+            walls.add(new Wall(200, 285, 50, 5));
+            walls.add(new Wall(100, 285, 50, 5));
+            walls.add(new Wall(150, 200, 50, 5));
+            walls.add(new Wall(5, 200, 50, 5));
+            walls.add(new Wall(0, 50, 50, 5));
+            walls.add(new Wall(100, 50, 50, 5));
+            walls.add(new Wall(200, 50, 50, 5));
+            walls.add(new Wall(300, 50, 50, 5));
+            walls.add(new Wall(400, 50, 50, 5));
+            walls.add(new Wall(500, 50, 50, 5));
+            walls.add(new Wall(600, 50, 50, 5));
+            walls.add(new Wall(100, 95, 50, 5));
+            walls.add(new Wall(360, 95, 50, 5));
+            walls.add(new Wall(200, 95, 50, 5));
+            walls.add(new Wall(400, 95, 50, 5));
+            walls.add(new Wall(500, 95, 50, 5));
+            walls.add(new Wall(250, 200, 50, 5));
+            walls.add(new Wall(300, 200, 50, 5));
+            walls.add(new Wall(550, 200, 50, 5));
+            walls.add(new Wall(400, 200, 50, 5));
+            walls.add(new Wall(350, 285, 50, 5));
+            walls.add(new Wall(450, 285, 50, 5));
+            // walls.add(new Wall(5, 285, 50, 5));
+            walls.add(new Wall(0, 340, 50, 5));
+            walls.add(new Wall(50, 340, 50, 5));
+            walls.add(new Wall(150, 340, 50, 5));
+            walls.add(new Wall(250, 340, 50, 5));
+            walls.add(new Wall(350, 340, 50, 5));
+            walls.add(new Wall(450, 340, 50, 5));
+            walls.add(new Wall(550, 340, 50, 5));
         } else if (level == 2) {
             // Créer des murs pour le niveau 2
             walls.add(new Wall(50, 50, 10, 300));  // Mur vertical
@@ -110,12 +163,12 @@ public class Game extends JPanel implements KeyListener {
                 }
             }
 
-            // Vérifier la collision avec les murs (obstacles)
-            for (Wall wall : walls) {
-                if (player.getBounds().intersects(wall.getBounds())) {
-                    player.resetPosition();  // Réinitialiser si collision avec un mur
-                }
-            }
+             //Vérifier la collision avec les murs (obstacles)
+             for (Wall wall : walls) {
+               if (player.getBounds().intersects(wall.getBounds())) {
+                player.resetPosition();  // Réinitialiser si collision avec un mur
+             }
+             }
 
             // Vérifier si le joueur mange un point
             for (int i = 0; i < points.size(); i++) {
@@ -129,7 +182,7 @@ public class Game extends JPanel implements KeyListener {
             for (int i = 0; i < specialPoints.size(); i++) {
                 if (player.getBounds().intersects(specialPoints.get(i).getBounds())) {
                     specialPoints.remove(i);  // Supprimer le point spécial collecté
-                    timeLeft += 5;  // Ajouter 5 secondes au temps restant
+                    timeLeft += 8;  // Ajouter 8 secondes au temps restant
                     i--;
                 }
             }
@@ -193,7 +246,8 @@ public class Game extends JPanel implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Labyrinth Game");
